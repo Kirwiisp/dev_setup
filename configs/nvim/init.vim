@@ -1,4 +1,3 @@
-set number
 set tabstop=4
 set shiftwidth=4
 set autoindent
@@ -18,29 +17,3 @@ Plug 'neovim/nvim-lspconfig'            " LSP configurations
 Plug 'williamboman/mason-lspconfig.nvim' " Mason integration with LSPconfig
 call plug#end()
 colorscheme tokyonight-night
-
-lua << EOF
-require("mason").setup()
-require("mason-lspconfig").setup({
-  ensure_installed = { "rust_analyzer",  "pyright"  },  -- Ensure rust-analyzer gopls and pyright are installed
-})
-
-local lspconfig = require("lspconfig")
-
--- Rust LSP
-lspconfig.rust_analyzer.setup({
-  on_attach = function(client, bufnr)
-    print("Rust LSP attached!")
-  end,
-})
--- Python LSP
-lspconfig.pyright.setup({
-  on_attach = function(client, bufnr)
-    print("Python LSP attached!")
-  end,
-})
-
-
-EOF
-
-
