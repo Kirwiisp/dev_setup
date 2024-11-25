@@ -8,7 +8,7 @@ set relativenumber
 set hlsearch
 set linebreak
 
-call plug#begin('./pluggins/plugged')
+call plug#begin('')
 Plug 'folke/tokyonight.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}

@@ -72,6 +72,7 @@ make deps
 
 # add nvim to PATH
 echo 'export PATH=$HOME/local/nvim/bin:$PATH' >> ~/.bashrc
+export PATH=$HOME/local/nvim/bin:$PATH
 
 # Confirm installation
 echo "Installation complete!"
