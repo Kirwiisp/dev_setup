@@ -90,3 +90,5 @@ cp -r dev_setup/configs/nvim ~/.config/
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 rm -rf dev_setup
+binPath="/home/${user_conf}/local/nvim/bin/nvim"
+sudo ln -s $binPath /bin/nvim
