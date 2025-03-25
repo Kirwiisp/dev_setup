@@ -10,32 +10,58 @@ set mouse=a
 set relativenumber
 set hlsearch
 set linebreak
+set scrolloff=8
+set undofile
+set undodir=$HOME/.config/nvim/undotree
 
 " Keymap config
-let mapleader = ","
+let mapleader = " "
 vnoremap <leader>v "*y
 nnoremap <leader>sf <cmd>Telescope find_files<cr>
 nnoremap <leader>sh <cmd>Telescope find_files  hidden=true  <cr>
 nnoremap <leader>sg <cmd>Telescope live_grep hidden=true <cr>
 nnoremap <leader>sb <cmd>Telescope buffers<cr>
+nnoremap <leader>u <cmd>UndotreeToggle<cr>
 
 " Plug Configuration
 call plug#begin('~/.config/nvim/pluggins/plugged')
 Plug 'folke/tokyonight.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
+Plug 'rebelot/kanagawa.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' } " Fuzzy finder
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-lua/plenary.nvim'
-Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason.nvim'          " LSP manager
 Plug 'neovim/nvim-lspconfig'            " LSP configurations
 Plug 'williamboman/mason-lspconfig.nvim' " Mason integration with LSPconfig
-Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2', 'as': 'harpoon' }
+Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2', 'as': 'harpoon' } " Quick file toggle
+Plug 'mbbill/undotree'                  " Undotree explorer
 call plug#end()
 
 colorscheme tokyonight-night
+"colorscheme kanagawa-wave
 hi Normal guibg=NONE ctermbg=NONE
 
 " Lua modules configurations
 lua << EOF
+
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all" (the listed parsers MUST always be installed)
+  ensure_installed = {  "python", "go", "ruby","lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
+
+  ignore_install = { "yaml" },
+
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- Automatically install missing parsers when entering buffer
+  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+  auto_install = true,
+
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = true,
+  },
+}
 
 require("mason").setup()
 require("mason-lspconfig").setup()
