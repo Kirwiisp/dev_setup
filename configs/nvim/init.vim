@@ -16,33 +16,55 @@ set noswapfile
 set colorcolumn=80
 
 " Keymap config
+" Leader to Spacebar
 let mapleader = " "
+
 " Allow copy to clipboard with Leader+v
 vnoremap <leader>v "*y
-" Telescope shortcuts 
-nnoremap <leader>sf <cmd>Telescope find_files<cr>
-nnoremap <leader>sh <cmd>Telescope find_files  hidden=true  <cr>
-nnoremap <leader>sg <cmd>Telescope live_grep hidden=true <cr>
-nnoremap <leader>sb <cmd>Telescope buffers<cr>
-" Open undoTree
-nnoremap <leader>u <cmd>UndotreeToggle<cr>
-" Open float for warning or error
-nnoremap <leader>k <cmd>lua vim.diagnostic.open_float()<CR>
+
 " Keep cursor in middle of screen while moving
 nnoremap <C-d> <C-d>zz 
 nnoremap <C-u> <C-u>zz 
 
 " Keep cursod in place while appending next line
 nnoremap J mzJ`z
+
+" Move between panes
+nnoremap <M-h> <C-w>h
+nnoremap <M-j> <C-w>j
+nnoremap <M-k> <C-w>k
+nnoremap <M-l> <C-w>l
+
+" Split panes
+nnoremap <M-s> <C-w>s
+nnoremap <M-v> <C-w>v
+
+" Equalize all panes
+nnoremap <M-=> <C-w>=
+
 " Move selection
 vnoremap K :m '<-2<CR>gv=gv
 vnoremap J :m '>+1<CR>gv=gv
+
+" Telescope shortcuts 
+nnoremap <leader>sf <cmd>Telescope find_files<cr>
+nnoremap <leader>sh <cmd>Telescope find_files  hidden=true  <cr>
+nnoremap <leader>sg <cmd>Telescope live_grep hidden=true <cr>
+nnoremap <leader>sb <cmd>Telescope buffers<cr>
+
+" Open undoTree
+nnoremap <leader>u <cmd>UndotreeToggle<cr>
+
+" Open float for warning or error
+nnoremap <leader>k <cmd>lua vim.diagnostic.open_float()<CR>
+
 " Plug Configuration
 call plug#begin('~/.config/nvim/pluggins/plugged')
 Plug 'folke/tokyonight.nvim' " theme
+Plug 'Mofiqul/vscode.nvim' " theme
 Plug 'rebelot/kanagawa.nvim' " theme
 Plug 'MeanderingProgrammer/render-markdown.nvim' 
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' } " Fuzzy finder
+Plug 'nvim-telescope/telescope.nvim',  " Fuzzy finder
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-context'
 Plug 'nvim-lua/plenary.nvim'
@@ -55,6 +77,7 @@ call plug#end()
 
 colorscheme tokyonight-night
 "colorscheme kanagawa-wave
+" colorscheme vscode
 hi Normal guibg=NONE ctermbg=NONE
 
 " Lua modules configurations
