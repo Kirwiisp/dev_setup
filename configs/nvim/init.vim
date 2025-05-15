@@ -29,6 +29,10 @@ nnoremap <C-u> <C-u>zz
 " Keep cursod in place while appending next line
 nnoremap J mzJ`z
 
+" Move accross quicklist
+nnoremap <M-J> <cmd>cnext<CR>
+nnoremap <M-K> <cmd>cprev<CR>
+
 " Move between panes
 nnoremap <M-h> <C-w>h
 nnoremap <M-j> <C-w>j
@@ -51,6 +55,7 @@ nnoremap <leader>sf <cmd>Telescope find_files<cr>
 nnoremap <leader>sh <cmd>Telescope find_files  hidden=true  <cr>
 nnoremap <leader>sg <cmd>Telescope live_grep hidden=true <cr>
 nnoremap <leader>sb <cmd>Telescope buffers<cr>
+nnoremap <leader>sd <cmd>Telescope diagnostics<cr>
 
 " Open undoTree
 nnoremap <leader>u <cmd>UndotreeToggle<cr>
@@ -58,6 +63,10 @@ nnoremap <leader>u <cmd>UndotreeToggle<cr>
 " Open float for warning or error
 nnoremap <leader>k <cmd>lua vim.diagnostic.open_float()<CR>
 
+" Methods documentation generator
+nnoremap <Leader>d <Plug>(doge-generate)
+
+"
 " Plug Configuration
 call plug#begin('~/.config/nvim/pluggins/plugged')
 Plug 'folke/tokyonight.nvim' " theme
@@ -65,10 +74,13 @@ Plug 'Mofiqul/vscode.nvim' " theme
 Plug 'rebelot/kanagawa.nvim' " theme
 Plug 'MeanderingProgrammer/render-markdown.nvim' 
 Plug 'nvim-telescope/telescope.nvim',  " Fuzzy finder
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release' }
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-context'
+Plug 'kkoomen/vim-doge'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'williamboman/mason.nvim'          " LSP manager
+Plug 'mason-org/mason.nvim'          " LSP manager
+Plug 'mason-org/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'            " LSP configurations
 Plug 'williamboman/mason-lspconfig.nvim' " Mason integration with LSPconfig
 Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2', 'as': 'harpoon' } " Quick file toggle
@@ -85,11 +97,13 @@ lua << EOF
 require('render-markdown').setup({
     file_types = { 'markdown'},
     render_modes = { 'n', 'c', 't'},
+    latex = { enabled = false},
+    html = {enabled = true},
 })
 
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the listed parsers MUST always be installed)
-  ensure_installed = {  "python", "go", "ruby","lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
+  ensure_installed = {  "python", "go", "ruby",  "markdown", "markdown_inline" },
 
   ignore_install = { "yaml" },
 
@@ -140,21 +154,27 @@ local function attach(client, bufnr)
   -- etc.
 end
 
-
-require("mason-lspconfig").setup_handlers {
-    -- The first entry (without a key) will be the default handler
-    -- and will be called for each installed server that doesn't have
-    -- a dedicated handler.
-    function (server_name) -- default handler (optional)
-        require("lspconfig")[server_name].setup {
-            on_attach = attach
-        }
-        require'lspconfig'.protols.setup{}
-        end
-}
+vim.lsp.config('*',{
+    on_attach = attach,
+})
 
 local lspconfig = require("lspconfig")
 
+-- Telescope configuration to use fzf
+require('telescope').setup {
+  extensions = {
+    fzf = {
+      fuzzy = true,                    -- false will only do exact matching
+      override_generic_sorter = true,  -- override the generic sorter
+      override_file_sorter = true,     -- override the file sorter
+      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+                                       -- the default case_mode is "smart_case"
+    }
+  }
+}
+-- To get fzf loaded and working with telescope, you need to call
+-- load_extension, somewhere after setup function:
+require('telescope').load_extension('fzf')
 -- Harpoon configuration
 
 local harpoon = require ("harpoon")
