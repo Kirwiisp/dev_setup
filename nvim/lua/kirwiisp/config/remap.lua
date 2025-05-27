@@ -9,7 +9,7 @@ vim.keymap.set("n", "<C-d>", "<C-d>zz" )
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 
 -- Keep cursor in place while appending next line
-vim.keymap.set("n", "J", "mzK`z" )
+vim.keymap.set("n", "J", "mzJ`z" )
 
 -- Move accross quicklist
 vim.keymap.set("n", "<M-J>", "<cmd>cnext<CR>")
